@@ -1,25 +1,17 @@
 FROM maven:3.9.16-eclipse-temurin-17 AS maven_upstream
-
 FROM mcr.microsoft.com/openjdk/jdk:25-ubuntu
 
 RUN apt-get update \
   && apt-get install -y ca-certificates curl git openssh-client --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
 
-# common for all images
-LABEL org.opencontainers.image.title="Apache Maven"
-LABEL org.opencontainers.image.source=https://github.com/carlossg/docker-maven
-LABEL org.opencontainers.image.url=https://github.com/carlossg/docker-maven
-LABEL org.opencontainers.image.description="Apache Maven is a software project management and comprehension tool. Based on the concept of a project object model (POM), Maven can manage a project's build, reporting and documentation from a central piece of information."
-
 ENV MAVEN_HOME=/usr/share/maven
+ENV MAVEN_CONFIG=/root/.m2
 
 COPY --from=maven_upstream ${MAVEN_HOME} ${MAVEN_HOME}
-COPY --from=maven_upstream /usr/local/bin/mvn-entrypoint.sh /usr/local/bin/mvn-entrypoint.sh
 
 RUN ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn
-ARG USER_HOME_DIR="/root"
-ENV MAVEN_CONFIG="$USER_HOME_DIR/.m2"
 
-ENTRYPOINT ["/usr/local/bin/mvn-entrypoint.sh"]
-CMD ["mvn"]
+WORKDIR /workspace
+
+CMD ["mvn", "clean", "package"]
