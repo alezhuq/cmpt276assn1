@@ -12,6 +12,5 @@ COPY --from=maven_upstream ${MAVEN_HOME} ${MAVEN_HOME}
 
 RUN ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn
 
-WORKDIR /workspace
 
 CMD ["mvn", "clean", "package"]
