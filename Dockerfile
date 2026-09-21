@@ -1,4 +1,4 @@
-FROM maven:3.9.16-eclipse-temurin-17 AS maven_upstream
+FROM maven:3.9.16-eclipse-temurin-25 AS maven_upstream
 
 WORKDIR /workspace
 
@@ -8,7 +8,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 
-FROM mcr.microsoft.com/openjdk/jdk:17-ubuntu
+FROM mcr.microsoft.com/openjdk/jdk:25-ubuntu
 
 WORKDIR /app
 
