@@ -13,16 +13,39 @@ const top10Cities = [
 const citySelect = document.getElementById("city");
 const viewCityButton = document.getElementById("viewCity");
 
+async function renderWeather(city) {
+  const response = await fetch(
+    `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`
+  );
 
-function renderWeather(city) {
-  document.getElementById("cityName").textContent = city;
+  const data = await response.json();
+
+  const latitude = data.results[0].latitude;
+  const longitude = data.results[0].longitude;
+
+  const weatherResponse = await fetch(
+    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,wind_speed_10m,weather_code`
+  );
+
+  const weather = await weatherResponse.json();
+
+    document.getElementById("cityName").textContent = "Weather: " + city;
+    document.getElementById("temperature").textContent =
+      weather.current.temperature_2m + "°C";
+    document.getElementById("wind").textContent =
+      weather.current.wind_speed_10m + " km/h";
+    document.getElementById("weatherCode").textContent =
+      weather.current.weather_code;
+
 }
 
+viewCityButton.addEventListener("click", () => {
+  renderWeather(citySelect.value);
+});
 viewCityButton.addEventListener("click", () => {
   const city = citySelect.value;
   renderWeather(city);
 });
-
 
 function loadCity(city) {
   citySelect.value = city;
