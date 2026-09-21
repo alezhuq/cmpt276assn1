@@ -14,4 +14,6 @@ RUN ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn
 
 COPY . .
 
+COPY --from=build /workspace/target/demo-0.0.1-SNAPSHOT.jar app.jar
+
 CMD ["java", "-jar", "app.jar"]
