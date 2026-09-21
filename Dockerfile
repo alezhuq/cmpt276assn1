@@ -14,4 +14,4 @@ RUN ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn
 
 COPY . .
 
-CMD ["mvn", "clean", "package"]
+CMD ["java", "-jar", "app.jar"]
