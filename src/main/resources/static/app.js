@@ -29,7 +29,7 @@ async function renderWeather(city) {
 
   const weather = await weatherResponse.json();
 
-    document.getElementById("cityName").textContent = city;
+    document.getElementById("cityName").textContent = "Weather: " + city;
     document.getElementById("temperature").textContent =
       weather.current.temperature_2m + "°C";
     document.getElementById("wind").textContent =
